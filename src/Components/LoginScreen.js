@@ -1,13 +1,15 @@
 import styled from "styled-components";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
 
 import logo from "../assets/imgs/logo.png"
-import TokenContext from "./TokenContest";
+import UserDataContext from "./UserDataContext";
 
 function LoginScreen () {
-    const {token, setToken} = useContext(TokenContext);
+    let navigate = useNavigate();
+    const {userData, setUserData} = useContext(UserDataContext);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isDisabled, setIsDisabled] = useState(false);
@@ -15,12 +17,28 @@ function LoginScreen () {
 
     function Login (ev) {
         ev.preventDefault();
+        setButton(<ThreeDots/>);
+        setIsDisabled(true);
         const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", 
         {
             email: email,
             password: password
         });
-        promisse.then(serverAnswer => console.log(serverAnswer))
+        promisse.then(serverAnswer => {
+            setUserData(serverAnswer.data);
+            navigate("/hoje");
+        });
+        promisse.catch(error => {
+            if (error.response.status === 401) {
+                alert("senha incorreta");
+                setButton("Entrar");
+                setIsDisabled(false);
+                return;
+            }
+            alert("Verifique o email informado, ou tente novamente mais tarde");
+            setButton("Entrar");
+            setIsDisabled(false);
+        })
     }
 
     return (

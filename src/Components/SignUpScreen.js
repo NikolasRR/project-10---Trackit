@@ -39,6 +39,7 @@ function SignUpScreen() {
             }
             alert("Certifique-se que preencheu os campos corretamente, ou tente novamente mais tarde");
             setIsDisabled(false);
+            setButton("Cadastrar");
         })
     }
     

@@ -1,24 +1,26 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { useState } from "react";
-import TokenContext from "./TokenContest";
+import UserDataContext from "./UserDataContext";
 import LoginScreen from "./LoginScreen";
 import SignUpScreen from "./SignUpScreen";
 
 import "../assets/css/reset.css";
 import "../assets/css/style.css";
+import Today from "./Today";
 
 function App() {
-    const [token, setToken] = useState("oi");
+    const [userData, setUserData] = useState({});
 
     return (
-        <TokenContext.Provider value={{ token, setToken }}>
+        <UserDataContext.Provider value={{ userData, setUserData }}>
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<LoginScreen />} />
                     <Route path="/cadastro" element={<SignUpScreen />} />
+                    <Route path="/hoje" element={<Today />} />
                 </Routes>
             </BrowserRouter>
-        </TokenContext.Provider>
+        </UserDataContext.Provider>
     )
 }
 
