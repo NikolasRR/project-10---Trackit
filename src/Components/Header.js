@@ -1,14 +1,16 @@
 import UserDataContext from "./UserDataContext";
-import {useState, useContext} from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 
-function Header () {
-    const {userData, setUserData} = useContext(UserDataContext);
-    console.log(userData);
+function Header() {
+    const { userData } = useContext(UserDataContext);
+
     return (
         <HeaderB>
-            <H1>TrackIt</H1>
-            <Photo src={userData.image}/>
+            <Div>
+                <H1>TrackIt</H1>
+                <Photo src={userData.image} />
+            </Div>
         </HeaderB>
     )
 }
@@ -23,19 +25,28 @@ const HeaderB = styled.header`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index: 2;
+`;
+
+const Div = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 18px;
 `;
 
 const H1 = styled.h1`
     font-family: 'Playball', cursive;
     font-size: 38.982px;
     line-height: 49px;
-    padding-left: 16px;
+    color: #FFFFFF;
 `;
 
 const Photo = styled.img`
     width: 51px;
     border-radius: 98.5px;
-    margin-rigth: 50px;
+    padding-right: 50px;
 `;
 
 export default Header;

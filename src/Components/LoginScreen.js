@@ -26,6 +26,7 @@ function LoginScreen () {
         });
         promisse.then(serverAnswer => {
             setUserData(serverAnswer.data);
+            localStorage.setItem("user", JSON.stringify(serverAnswer.data));
             navigate("/hoje");
         });
         promisse.catch(error => {
@@ -49,7 +50,7 @@ function LoginScreen () {
                 <Input onChange={ev => setPassword(ev.target.value)} disabled={isDisabled} value={password} placeholder="senha" type="password"></Input>
                 <Button type="submit" disabled={isDisabled}>{button}</Button>
             </Form>
-            <Link to="/cadastro"><P>Não tem uma conta? Cadastre-se!</P></Link>
+            <StyledLink to="/cadastro"><P>Não tem uma conta? Cadastre-se!</P></StyledLink>
         </Container>
     )
 }
@@ -78,19 +79,30 @@ const Form = styled.form`
 
 const Input = styled.input`
     width: 303px;
-    heigth: 45px;
+    height: 45px;
     margin-bottom: 6px;
+    border: none;
+    color: #666666;
 `;
 
 const Button = styled.button`
     width: 303px;
-    heigth: 45px;
+    height: 45px;
     margin-bottom: 25px;
+    background: #52B6FF;
+    border-radius: 4.63636px;
+    border: none;
+    color: #FFFFFF;
 `;
 
 const P = styled.p`
     font-size: 13.976px;
     line-height: 17px;
+`;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #52B6FF;
 `;
 
 export default LoginScreen;

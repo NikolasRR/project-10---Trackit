@@ -53,7 +53,7 @@ function SignUpScreen() {
                 <Input disabled={isDisabled} onChange={ev => setPhoto(ev.target.value)} value={photo} placeholder="foto" type="url" required></Input>
                 <Button disabled={isDisabled} type="submit">{button}</Button>
             </Form>
-            <Link to="/"><P>Já tem uma conta? Faça login!</P></Link>
+            <StyledLink to="/"><P>Já tem uma conta? Faça login!</P></StyledLink>
         </Container>
     )
 }
@@ -82,19 +82,31 @@ const Form = styled.form`
 
 const Input = styled.input`
     width: 303px;
-    heigth: 45px;
+    height: 45px;
     margin-bottom: 6px;
+    border: none;
+    color: #666666;
 `;
 
 const Button = styled.button`
     width: 303px;
-    heigth: 45px;
+    height: 45px;
     margin-bottom: 25px;
+    background: #52B6FF;
+    border-radius: 4.63636px;
+    border: none;
+    color: #FFFFFF;
 `;
 
 const P = styled.p`
     font-size: 13.976px;
     line-height: 17px;
 `;
+
+const StyledLink = styled(Link)`
+    text-decoration: none;
+    color: #52B6FF;
+`;
+
 
 export default SignUpScreen;

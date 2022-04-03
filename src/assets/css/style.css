@@ -1,3 +1,7 @@
 * {
     font-family: 'Lexend Deca', sans-serif;
 }
+
+input::placeholder {
+    color: #DBDBDB;
+}
