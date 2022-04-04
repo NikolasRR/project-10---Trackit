@@ -2,7 +2,8 @@ import Header from "../Header";
 import dayjs from "dayjs";
 import styled from "styled-components";
 import axios from "axios";
-import UserDataContext from "../UserDataContext";
+import UserDataContext from "../Contexts/UserDataContext";
+import PercentageDoneContext from "../Contexts/PercentageDoneContext";
 import { useEffect, useContext, useState } from "react";
 import Footer from "../Footer";
 import TodaysHabit from "./TodaysHabit";
@@ -10,6 +11,7 @@ import TodaysHabit from "./TodaysHabit";
 function Today() {
     const weekday = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
     const { userData } = useContext(UserDataContext);
+    const { percentageDone, setPercentageDone } = useContext(PercentageDoneContext);
     const [habits, setHabits] = useState([]);
 
     useEffect(() => {
@@ -18,7 +20,9 @@ function Today() {
                 {
                     headers: { Authorization: `Bearer ${userData.token}` }
                 });
-            promisse.then(serverAnswer => setHabits(serverAnswer.data));
+            promisse.then(serverAnswer => 
+                setHabits(serverAnswer.data)
+                );
             promisse.catch(error => console.log(error.response.status));
         }
     }, [userData]);
@@ -30,12 +34,10 @@ function Today() {
                 <H2>
                     {weekday[dayjs().day()]}, {dayjs().date().toString().padStart(2, '0')}/{(dayjs().month() + 1).toString().padStart(2, '0')}
                 </H2>
-                <P>
-                    Nenhum hábito concluído ainda
-                </P>
+                <P style={{color: percentageDone === 0 ? "#BABABA" : "#8FC549"}}>{percentageDone === 0 ? "Nenhum hábito concluído ainda" : `${Math.floor(percentageDone*100)}% dos hábitos concluídos`}</P>
             </Div>
             <Main>
-                {habits.map((habit, index) => <TodaysHabit habit={habit} key={index}/>)}
+                {habits.map((habit, index) => <TodaysHabit habit={habit} key={index} />)}
             </Main>
             <Footer />
         </>

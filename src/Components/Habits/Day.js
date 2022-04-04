@@ -1,10 +1,13 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import HabitFormContext from "../Contexts/HabitFormContext";
 
-function Day({ day, dayIndex, habitDays, setHabitDays }) {
-    const [selected, setSelected] = useState(false);
+function Day({ day, dayIndex, isDisabled }) {
+    const { habitDays, setHabitDays } = useContext(HabitFormContext);
+    const previouslySelected = habitDays.includes(dayIndex);
+    const [selected, setSelected] = useState(previouslySelected);
 
-    function selectDay () {
+    function selectDay() {
         if (habitDays.includes(dayIndex)) {
             let index = habitDays.indexOf(dayIndex);
             habitDays.splice(index, 1);
@@ -17,11 +20,13 @@ function Day({ day, dayIndex, habitDays, setHabitDays }) {
     }
 
     return (
-        <Weekday 
-        onClick={() => selectDay()} 
-        className={selected ? "selected" : "unselected"} 
-        type="button"
-        style={{background: selected ? "#CFCFCF" : "#FFFFFF", color: selected ? "#FFFFFF" : "#DBDBDB"}}>
+        <Weekday
+            onClick={() => selectDay()}
+            className={selected ? "selected" : "unselected"}
+            type="button"
+            disabled={isDisabled}
+            style={{ background: selected ? "#CFCFCF" : "#FFFFFF", color: selected ? "#FFFFFF" : "#DBDBDB" }}
+            >
             {day}
         </Weekday>
     );

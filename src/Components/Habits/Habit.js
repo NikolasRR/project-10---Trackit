@@ -1,7 +1,7 @@
 import axios from "axios";
 import styled from "styled-components";
 import { useContext } from "react";
-import UserDataContext from "../UserDataContext";
+import UserDataContext from "../Contexts/UserDataContext";
 
 function Habit({ habit }) {
     const { userData, setUserData } = useContext(UserDataContext);

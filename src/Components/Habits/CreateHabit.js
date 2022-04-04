@@ -1,19 +1,22 @@
 import styled from "styled-components";
 import { useState, useContext } from "react";
-import UserDataContext from "../UserDataContext";
+import UserDataContext from "../Contexts/UserDataContext";
 import Day from "./Day";
 import axios from "axios";
+import { ThreeDots } from "react-loader-spinner";
+import HabitFormContext from "../Contexts/HabitFormContext";
 
-function CreateHabit( {setCreatingHabit}) {
+function CreateHabit({ setCreatingHabit }) {
     const { userData, setUserData } = useContext(UserDataContext);
+    const { habitDays, setHabitDays, habit, setHabit } = useContext(HabitFormContext);
     const weekdays = ["D", "S", "T", "Q", "Q", "S", "S"];
-    const [habitDays, setHabitDays] = useState([]);
-    const [habit, setHabit] = useState("");
-
-    console.log(userData.token);
+    const [isDisabled, setIsDisabled] = useState(false);
+    const [button, setButton] = useState("Salvar");
 
     function postHabit(ev) {
         ev.preventDefault();
+        setIsDisabled(true);
+        setButton(<ThreeDots color="#FFFFFF" height="11px" width="43px" />)
         const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits",
             {
                 name: habit,
@@ -24,19 +27,24 @@ function CreateHabit( {setCreatingHabit}) {
             });
         promisse.then(() => {
             setCreatingHabit(false);
-            setUserData({...userData});
+            setUserData({ ...userData });
+            setHabitDays([]);
+            setHabit("");
         });
-        promisse.catch(() => alert("Ocorreu um erro"));
+        promisse.catch(() => {
+            alert("Ocorreu um erro");
+            setIsDisabled(false);
+        });
     }
 
     return (
         <Creation>
             <Form onSubmit={ev => postHabit(ev)}>
-                <HabitInput onChange={ev => setHabit(ev.target.value)} type="text" placeholder="nome do hábito" value={habit}></HabitInput>
-                {weekdays.map((day, index) => <Day day={day} dayIndex={index} key={index} habitDays={habitDays} setHabitDays={setHabitDays} />)}
+                <HabitInput onChange={ev => setHabit(ev.target.value)} type="text" placeholder="nome do hábito" value={habit} disabled={isDisabled} style={{ opacity: isDisabled ? "0.7" : "1" }}></HabitInput>
+                {weekdays.map((day, index) => <Day day={day} dayIndex={index} key={index} isDisabled={isDisabled}/>)}
                 <CancelOrSubmit>
-                    <Cancel onClick={() => setCreatingHabit(false)}>Cancelar</Cancel>
-                    <Submit type="submit">Salvar</Submit>
+                    <Cancel onClick={() => setCreatingHabit(false)} disabled={isDisabled} isDisabled={isDisabled}>Cancelar</Cancel>
+                    <Submit type="submit" disabled={isDisabled} style={{ opacity: isDisabled ? "0.7" : "1" }}>{button}</Submit>
                 </CancelOrSubmit>
             </Form>
         </Creation>
@@ -75,6 +83,7 @@ const Cancel = styled.button`
     width: 84px;
     height: 35px;
     border: none;
+    opacity: ${({isDisabled}) => isDisabled ? "0.7" : "1"};
 `;
 
 const Submit = styled.button`
@@ -85,6 +94,9 @@ const Submit = styled.button`
     border: none;
     margin-left: 8px;
     color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 `;
 
 export default CreateHabit;

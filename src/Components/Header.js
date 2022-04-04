@@ -1,4 +1,4 @@
-import UserDataContext from "./UserDataContext";
+import UserDataContext from "./Contexts/UserDataContext";
 import { useContext } from "react";
 import styled from "styled-components";
 
@@ -26,6 +26,7 @@ const HeaderB = styled.header`
     align-items: center;
     justify-content: space-between;
     z-index: 2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 `;
 
 const Div = styled.div`
@@ -46,7 +47,6 @@ const H1 = styled.h1`
 const Photo = styled.img`
     width: 51px;
     border-radius: 98.5px;
-    padding-right: 50px;
 `;
 
 export default Header;

@@ -18,7 +18,7 @@ function SignUpScreen() {
     function SignUp (ev) {
         ev.preventDefault();
         setIsDisabled(true);
-        setButton(<ThreeDots />);
+        setButton(<ThreeDots color="#FFFFFF" height="13px" width="51px"/>);
         const promisse = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", 
         {
             email: email,
@@ -47,11 +47,11 @@ function SignUpScreen() {
         <Container>
             <Photo src={logo} alt="logo" />
             <Form onSubmit={(ev) => SignUp(ev)}>
-                <Input disabled={isDisabled} onChange={ev => setEmail(ev.target.value)} value={email} placeholder="email" type="email" required></Input>
-                <Input disabled={isDisabled} onChange={ev => setPassword(ev.target.value)} value={password} placeholder="senha" type="password" required></Input>
-                <Input disabled={isDisabled} onChange={ev => setName(ev.target.value)} value={name} placeholder="nome" type="text" required></Input>
-                <Input disabled={isDisabled} onChange={ev => setPhoto(ev.target.value)} value={photo} placeholder="foto" type="url" required></Input>
-                <Button disabled={isDisabled} type="submit">{button}</Button>
+                <Input disabled={isDisabled} onChange={ev => setEmail(ev.target.value)} value={email} placeholder="email" style={{opacity: isDisabled ? "0.7" : "1"}} type="email" required></Input>
+                <Input disabled={isDisabled} onChange={ev => setPassword(ev.target.value)} value={password} placeholder="senha" style={{opacity: isDisabled ? "0.7" : "1"}} type="password" required></Input>
+                <Input disabled={isDisabled} onChange={ev => setName(ev.target.value)} value={name} placeholder="nome" style={{opacity: isDisabled ? "0.7" : "1"}} type="text" required></Input>
+                <Input disabled={isDisabled} onChange={ev => setPhoto(ev.target.value)} value={photo} placeholder="foto" style={{opacity: isDisabled ? "0.7" : "1"}} type="url" required></Input>
+                <Button disabled={isDisabled} type="submit" style={{opacity: isDisabled ? "0.7" : "1"}}>{button}</Button>
             </Form>
             <StyledLink to="/"><P>Já tem uma conta? Faça login!</P></StyledLink>
         </Container>
@@ -96,6 +96,9 @@ const Button = styled.button`
     border-radius: 4.63636px;
     border: none;
     color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
 const P = styled.p`

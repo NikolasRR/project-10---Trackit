@@ -1,16 +1,20 @@
 import Footer from "../Footer";
 import Header from "../Header";
 import CreateHabit from "./CreateHabit";
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, createContext } from "react";
 import styled from "styled-components";
-import UserDataContext from "../UserDataContext";
+import UserDataContext from "../Contexts/UserDataContext";
+import HabitFormContext from "../Contexts/HabitFormContext";
 import axios from "axios";
 import Habit from "./Habit";
 
 function Habits() {
     const { userData } = useContext(UserDataContext);
+
     const [creatingHabit, setCreatingHabit] = useState(false);
     const [allHabits, setAllHabits] = useState([]);
+    const [habitDays, setHabitDays] = useState([]);
+    const [habit, setHabit] = useState("");
 
     useEffect(() => {
         if (userData.token !== undefined) {
@@ -20,7 +24,6 @@ function Habits() {
                 })
                 .then(serverAnswer => {
                     setAllHabits(serverAnswer.data)
-                    console.log(serverAnswer)
                 })
                 .catch(() => alert("sou o rei do erro de servidor"));
         }
@@ -29,7 +32,7 @@ function Habits() {
     let noHabits = allHabits.length === 0;
 
     return (
-        <>
+        <HabitFormContext.Provider value={{habitDays, setHabitDays, habit, setHabit}}>
             <Header />
             <Main>
                 <Header2>
@@ -41,13 +44,12 @@ function Habits() {
                         !creatingHabit && noHabits &&
                         <P>Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para começar a trackear!</P>
                     }
-                    {
-                        creatingHabit &&
-                        <>
-                            <CreateHabit setCreatingHabit={setCreatingHabit} />
-                            {allHabits.map((habit, index) => <Habit key={index} habit={habit} />)}
-                        </>
-                    }
+
+                    {creatingHabit && <>
+                        <CreateHabit setCreatingHabit={setCreatingHabit} />
+                        {allHabits.map((habit, index) => <Habit key={index} habit={habit} />)}
+                    </>}
+
                     {
                         !creatingHabit && !noHabits &&
                         allHabits.map((habit, index) => <Habit key={index} habit={habit} />)
@@ -56,7 +58,7 @@ function Habits() {
                 </UsersHabits>
             </Main>
             <Footer />
-        </>
+        </HabitFormContext.Provider>
     )
 }
 
